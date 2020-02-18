@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { MdAddShoppingCart } from 'react-icons/md';
 import { ProductList } from './styles';
 import formatPrice from '../../util/format';
-
+import { connect } from 'react-redux';
 import API from '../../services/api';
 
 // eslint-disable-next-line react/prefer-stateless-function
-export default class Home extends Component {
+class Home extends Component {
   // eslint-disable-next-line react/state-in-constructor
   state = {
     products: [],
@@ -22,6 +22,16 @@ export default class Home extends Component {
     this.setState({ products: data });
   }
 
+  handleAddProduct = product => {
+    // eslint-disable-next-line react/prop-types
+    const { dispatch } = this.props;
+
+    dispatch({
+      type: 'ADD_TO_CART',
+      product,
+    });
+  };
+
   render() {
     const { products } = this.state;
     return (
@@ -31,9 +41,12 @@ export default class Home extends Component {
             <img src={product.image} alt={product.title} />
             <strong>{product.title}</strong>
             <span>{product.formattedPrice}</span>
-            <button type="button">
+            <button
+              type="button"
+              onClick={() => this.handleAddProduct(product)}
+            >
               <div>
-                <MdAddShoppingCart size={16} color="#FFF" />
+                <MdAddShoppingCart size={16} color="#FFF" /> 3
               </div>
               <span>ADICIONAR AO CARRINHO</span>
             </button>
@@ -43,3 +56,5 @@ export default class Home extends Component {
     );
   }
 }
+
+export default connect()(Home);
