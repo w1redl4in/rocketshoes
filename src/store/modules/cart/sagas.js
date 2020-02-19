@@ -3,7 +3,6 @@ import API from '../../../services/api';
 import { addToCartSuccess } from './actions';
 
 function* addToCart({ id }) {
-  console.log(id);
   const response = yield call(API.get, `/products/${id}`);
   yield put(addToCartSuccess(response.data));
 }
